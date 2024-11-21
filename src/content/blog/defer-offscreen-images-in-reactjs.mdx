@@ -1,0 +1,100 @@
+---
+title: "Defer offscreen images  in ReactJS"
+description: "Lorem ipsum dolor sit amet"
+pubDate: "Aug 17 2021"
+heroImage: "/blogs/20211708/featured.webp"
+---
+
+Yes, this is when you try to improve your Page Speed Insight scrore. I use ReactJS and meet this issue. I search for solution, and yes, there is a lot of solutions.
+
+## Offscreen image? Defer?
+
+`Offscreen image` is that image that not showing in current view (Eg: you have to scroll down to see it).
+
+`Defer` is that load the image only when you need to see it.
+
+## Solutions I found on Google
+
+1.  react-lazy-load-image-component (not work for me)
+
+Many answers lead to this package. Simple install, simple use, easy to understand. But not work for me. I tried setup following the guide, use @loadable/components\` for dynamic import, wrap the offscreen images in it's wrapper.
+
+2. lazysides (not compatible to my current code)
+
+Following the post at [https://web.dev/offscreen-images/](https://web.dev/offscreen-images/), I tried this one. Watching the network tab on Chrome's developer tool, I can see it works, the image is loaded only when I scroll to it's section. But it didn't display properly, wrong css, and I have to rewrite css for each image if I apply this.
+
+I want a solution that I don't need to modify the css, because my project is a bunch of specific-custom for every image.
+
+## Get my hand dirty
+
+I decided to do it on my own. I found [this article](https://www.tezify.com/how-to/defer-offscreen-images/), and thanks god, it works for me.
+
+### For image that load by `<img />` tag
+
+1. Write a function to load the image correctly
+
+```plaintext
+export const loadLazyImage = function () {
+   if ("IntersectionObserver" in window) {
+   const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.intersectionRatio > 0) {
+          if (entry.target.hasAttribute("data-src")) {
+            entry.target.setAttribute(
+              "src",
+              entry.target.getAttribute("data-src")
+            );
+            observer.unobserve(entry.target);
+          }
+        }
+      });
+    });
+    document.querySelectorAll(".lazy-image").forEach((imageElement) => {
+      if (imageElement.getAttribute("is-observed") != "true" && imageElement.getAttribute("data-src") != null)
+      {
+        imageElement.setAttribute("is-observed", "true")
+        observer.observe(imageElement);
+      }
+    });
+  } else {
+    var imgList = document.querySelectorAll(".lazy-image");
+    Array.prototype.forEach.call(imgList, function (image) {
+      image.setAttribute("src", image.getAttribute("data-src"));
+    });
+  }
+};
+```
+
+2. In the component contain off screen images, call the `loadLazyImage` when it mounted, and modify the `<img />` tag as comment in the code
+
+```plaintext
+export function OffscreenComponent() {
+  useEffect(() => {
+    loadLazyImage();
+  }, []);
+
+  return (
+    ...
+    <img className="lazy-image" data-source="your-image" src="" />
+    // Put the real src in data-src field
+    // You can set the src to placeholder image
+    ...
+  );
+}
+```
+
+> **_Explaination:_** When the web loaded, all the components were mounted, it will register an [Intersection Observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) to watch elements we want (in this case, all elements with class `lazy-image`). When the observer see that the element is visible, we set the `src` with `data-src` 's value, so now the image is loaded completely.
+
+### For image that load by `background-image` property
+
+Similar to with `img` tag, set `data-src` with the correct image. Then change
+
+```plaintext
+image.setAttribute("src", image.getAttribute("data-src"));
+```
+
+to
+
+```plaintext
+image.setAttribute("style", `background-image:${image.getAttribute("data-src")}`);
+```

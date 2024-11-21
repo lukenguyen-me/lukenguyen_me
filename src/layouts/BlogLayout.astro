@@ -1,0 +1,45 @@
+---
+import BaseHead from "@/components/BaseHead.astro";
+import Navbar from "@/components/Navbar";
+import { cn } from "@/lib/utils";
+import "@/styles/github-markdown.css";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+
+    <style>
+      .markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+      }
+
+      @media (max-width: 767px) {
+        .markdown-body {
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+
+  <body
+    class={cn(
+      "bg-background dark:bg-[rgb(13,17,23)] text-primary font-sans pb-20",
+    )}
+  >
+    <slot />
+    <Navbar client:load />
+  </body>
+</html>

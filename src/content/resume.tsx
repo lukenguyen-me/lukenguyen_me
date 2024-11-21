@@ -1,5 +1,5 @@
 import { Icons } from "@/components/Icons";
-import { HomeIcon } from "lucide-react";
+import { BookText, HomeIcon } from "lucide-react";
 
 export const DATA = {
   name: "Luke Nguyen",
@@ -28,7 +28,10 @@ export const DATA = {
     "AWS DynamoDB",
     "AWS Cognito",
   ],
-  navbar: [{ href: "/", icon: HomeIcon, label: "Home" }],
+  navbar: [
+    { href: "/", icon: HomeIcon, label: "Home" },
+    { href: "/blog", icon: BookText, label: "Blog" },
+  ],
   contact: {
     email: "lukenguyen.me@gmail.com",
     tel: "+84 944 281 788",

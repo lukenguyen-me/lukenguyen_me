@@ -1,6 +1,5 @@
 ---
 import { Badge } from "@/components/ui/badge";
-import { Card, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { ChevronRightIcon } from "lucide-react";
 import AvatarCircle from "../blocks/AvatarCircle.astro";
@@ -27,7 +26,7 @@ const { href, logoUrl, altText, title, subtitle, badges, period, description } =
         src={logoUrl}
         alt={altText}
         fallbackText={altText[0]}
-        className="object-contain size-12"
+        className="size-12 object-contain"
       />
     </div>
     <div class="group ml-4 flex-grow flex-col items-center">
@@ -39,7 +38,7 @@ const { href, logoUrl, altText, title, subtitle, badges, period, description } =
           {
             badges && (
               <span class="inline-flex gap-x-1">
-                {badges.map((badge, index) => (
+                {badges.map((badge) => (
                   <Badge variant="secondary" className="align-middle text-xs">
                     {badge}
                   </Badge>
