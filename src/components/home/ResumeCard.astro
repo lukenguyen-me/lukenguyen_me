@@ -61,25 +61,7 @@ const { href, logoUrl, altText, title, subtitle, badges, period, description } =
         </div>
       </div>
       {subtitle && <div class="font-sans text-xs">{subtitle}</div>}
-      <!-- {
-        description && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{
-              opacity: isExpanded ? 1 : 0,
-
-              height: isExpanded ? "auto" : 0,
-            }}
-            transition={{
-              duration: 0.7,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-            className="mt-2 text-xs sm:text-sm"
-          >
-            {description}
-          </motion.div>
-        )
-      } -->
+      {description && <div class="mt-2 text-xs sm:text-sm">{description}</div>}
     </div>
   </div>
 </a>

@@ -7,7 +7,7 @@ export default function ModeToggle() {
       variant="ghost"
       type="button"
       size="icon"
-      className="px-2"
+      className="rounded-full px-2"
       onClick={() => {
         if (localStorage.theme === "dark") {
           localStorage.theme = "light";
