@@ -9,6 +9,12 @@ import MainLayout from "@/layouts/MainLayout.astro";
 import ProjectCard from "@/components/home/ProjectCard.astro";
 import HackathonCard from "@/components/home/HackathonCard.astro";
 import ResumeCard from "@/components/home/ResumeCard.astro";
+import { getCollection } from "astro:content";
+import BlogCard from "@/components/home/BlogCard.astro";
+
+const posts = (await getCollection("blog"))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 2);
 ---
 
 <!doctype html>
@@ -157,6 +163,49 @@ import ResumeCard from "@/components/home/ResumeCard.astro";
               </div>
             ))
           }
+        </div>
+      </div>
+    </section>
+    <section id="blogs">
+      <div class="w-full space-y-12 py-12">
+        <div>
+          <div
+            class="flex flex-col items-center justify-center space-y-4 text-center"
+          >
+            <div class="space-y-2">
+              <div
+                class="inline-block rounded-lg bg-foreground px-3 py-1 text-sm text-background"
+              >
+                Blogs
+              </div>
+              <h2 class="text-3xl font-bold tracking-tighter sm:text-5xl">
+                My recents learing
+              </h2>
+              <p
+                class="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+              >
+                Day after day, I&apos;m learning something new. The best way to
+                remember what I&apos;ve learned is to write about it.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <ul class="mb-4 ml-4 divide-y divide-dashed border-l">
+            {
+              posts.map((post) => (
+                <div>
+                  <BlogCard
+                    title={post.data.title}
+                    description={post.data.description}
+                    date={post.data.pubDate}
+                    image={post.data.heroImage}
+                    link={`/blog/${post.slug}`}
+                  />
+                </div>
+              ))
+            }
+          </ul>
         </div>
       </div>
     </section>

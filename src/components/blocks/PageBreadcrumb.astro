@@ -1,0 +1,39 @@
+---
+import {
+  Breadcrumb,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+  BreadcrumbItem,
+  BreadcrumbPage,
+} from "@/components/ui/breadcrumb";
+
+interface Props {
+  items: {
+    url?: string;
+    title: string;
+  }[];
+}
+
+const { items } = Astro.props;
+---
+
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem>
+      <BreadcrumbLink href='/'>Home</BreadcrumbLink>
+    </BreadcrumbItem>
+    {items.map((item) => (
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        {item.url ? (
+          <BreadcrumbLink href={item.url}>{item.title}</BreadcrumbLink>
+        ) : (
+          <BreadcrumbPage className="w-40 max-w-full truncate sm:w-60 md:w-80">
+            {item.title}
+          </BreadcrumbPage>
+        )}
+      </BreadcrumbItem>
+    ))}
+  </BreadcrumbList>
+</Breadcrumb>

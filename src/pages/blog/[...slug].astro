@@ -4,14 +4,7 @@ import BlogLayout from "@/layouts/BlogLayout.astro";
 import FormattedDate from "@/components/FormattedDate.astro";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
-import {
-  Breadcrumb,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-  BreadcrumbItem,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb";
+import PageBreadcrumb from "@/components/blocks/PageBreadcrumb.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -35,23 +28,7 @@ const { Content } = await post.render();
       "flex flex-col min-h-[100dvh] space-y-10",
     )}
   >
-    <Breadcrumb>
-      <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbLink href="/">Home</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbLink href="/blog">Blog</BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem className="flex-1">
-          <BreadcrumbPage className="w-40 max-w-full truncate sm:w-60 md:w-80"
-            >{title}</BreadcrumbPage
-          >
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
+    <PageBreadcrumb items={[{ title: "Blog", url: "/blog" }, { title }]} />
     <article class="flex flex-col gap-6">
       <div>
         {
