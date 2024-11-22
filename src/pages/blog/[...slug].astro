@@ -45,8 +45,10 @@ const { Content } = await post.render();
           <BreadcrumbLink href="/blog">Blog</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbPage>{title}</BreadcrumbPage>
+        <BreadcrumbItem className="flex-1">
+          <BreadcrumbPage className="w-40 max-w-full truncate sm:w-60 md:w-80"
+            >{title}</BreadcrumbPage
+          >
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
@@ -64,11 +66,11 @@ const { Content } = await post.render();
           )
         }
       </div>
-      <div class="title">
-        <div class="date">
+      <div>
+        <div>
           <FormattedDate date={pubDate} />
         </div>
-        <h1 class="text-4xl font-medium">{title}</h1>
+        <h1 class="text-4xl font-medium leading-tight">{title}</h1>
       </div>
       <Separator className="mx-auto my-6 w-[50%]" />
       <div class="markdown-body">

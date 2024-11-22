@@ -1,0 +1,134 @@
+---
+title: "Dynamic inject Reducer - use your Reducer on demand"
+description: ""
+pubDate: "Aug 21 2021"
+heroImage: "/blogs/20210821/hero.webp"
+---
+
+Redux is one of the most common library for React developers. Hundreds of guide and tutorial on the internet explain what it is, how it work, and how we use it in our project. But it just a small project for example, how about the big ones?
+
+## The problem
+
+In big project, we have many screens. Each screen has different functions, so that we can't declare all state in one reducer like the simple tutorial.
+
+```plaintext
+/* rootReducer.js */
+import homeReducer from 'src/home/reducer';
+import profileReducer from 'src/home/reducer';
+
+const rootReducer = combineReducer({
+    ...reducerHome,
+    ...reducerProfile,
+    ...
+});
+
+export default rootReducer;
+```
+
+Looks familiar right? Redux give us a function `combineReducer` to combine all reducers to only one, and use it as parameter to create redux store. But here come the problem. When you enter the Home page, your code will import `rootReducer` to use Home's reducer, and accidentally load the Profile's reducer. We don't want to load anything relate to Profile page (because we don't need it). Imagine in real project, you must have many reducers like this, and each reducer may import many files for it's page. As a result, your production build will include all of these files in one chunk, causing the `Remove unused javascript` when calculating performance. So this way does not sound very scalable.
+
+## The solution
+
+Luckily, Redux offer us `replaceReducer` method of a Redux store. Let change rootReducer a bit
+
+```plaintext
+/* rootReducer.js */
+
+const staticReducer = {};
+/* reducer that you're sure to always import */
+
+const createReducer = (asyncReducer = {}) => {
+  combineReducer({
+    ...staticReducer,
+    ...asyncReducer,
+  });
+
+export default createReducer;
+```
+
+```plaintext
+/* store.js */
+
+import { createStore } from 'redux';
+import createReducer from './rootReducer';
+
+const initializeStore = ({ initialState = {} }) => {
+  const store = createStore(createReducer(), initialState);
+  store.asyncReducers = {};
+  store.injectReducer = (key, reducer) => {
+    store.asyncReducers[key] = reducer;
+    store.replaceReducer(createReducer(store.asyncReducers));
+  };
+
+  return store;
+}
+
+export default initializeStore;
+```
+
+I added `injectReducers` to `store` instance. By doing this, we don't need to import all reducers into one file. In other page, for example Profile page, I can inject it's reducer:
+
+```plaintext
+/* Profile.js */
+import reducer from './profileReducer';
+
+class Profile extends React.Component {
+  componentWillMount() {
+    const { store } = this.context;
+    store.injectReducer('profile', reducer);
+  }
+
+  render() {
+    ...
+  }
+}
+
+export default Profile;
+```
+
+## Use injectReducer more conveniently with HOC
+
+We'll improve the solution more reusable with this `withReducer`
+
+```plaintext
+/* withReducer.js */
+import React from 'react';
+import { ReactReduxContext } from 'react-redux';
+
+export const withReducer = (key, reducer) => WrappedComponent => {
+  class Wrapper extends React.Component {
+    static WrappedComponent = WrappedComponent;
+
+    componentWillMount() {
+      const { store } = this.context;
+      store.injectReducer(key, reducer);
+    }
+
+    render() {
+      return <WrappedComponent {...this.props} />;
+    }
+  }
+  Wrapper.contextType = ReactReduxContext;
+  return Wrapper;
+};
+
+export default withReducer;
+```
+
+and use it
+
+```plaintext
+/* Profile.js */
+import reducer from './profileReducer';
+
+class Profile extends React.Component {
+  /* no need to injectReducer in componentWillMount anymore */
+  render() {
+    ...
+  }
+}
+
+export default withReducer('profile', reducer)(Profile);
+```
+
+This solution is not a perfect one, but I believe it's more effective than the traditional approach. Hope this post help anyone who finding a way to optimize their project.

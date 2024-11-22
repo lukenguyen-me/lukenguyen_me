@@ -1,0 +1,44 @@
+---
+title: "How I move my Wordpress site from subdomain to subdirectory of a ReactJS project"
+description: ""
+pubDate: "Aug 15 2021"
+heroImage: "/blogs/20210815/hero.webp"
+---
+
+I have a web app built in ReactJS at `https://myreactapp.com`, and a blog which supports contents for the app, built in Wordpress at `https://blog.myreactapp.com`. Let say, I want to move my blog to `https://myreactapp.com/blog`. Here is how I try, failed, and success.
+
+## Why move from subdomain to subdirectory?
+
+It's easier to deploy, manage and maintain when the blog is on a subdomain. But, using subdirectory brings better SEO results, because the blog can inherit all SEO optimization I made on the react app.
+
+## How I did
+
+Firstly, I need to drop the old domain, and proxy all request with the `/blog` path to my Wordpress location. This's up to your deployment model, what type of your server,... we're not discussing dev-ops stuff here.
+
+Next, go to admin page of the Wordpress (currently is `https://blog.myreactapp.com`), choose Setting -&gt; General menu -&gt; Update fields `WordPress Address (URL)` and `Site Address (URL)` to new url -&gt; Hit `Save changes`.
+
+![Change site address and WP address in admin](/blogs/20210815/picture_1.webp)
+
+Bang 👊 The page's broken after reload. Don't worry, because we change our WP site address, so the `blog.myreactapp.com` is not recognized by WP anymore, obviously. Try enter new one `myreactapp.com/blog`, and we made a comeback.
+
+Next, I need to update all hyperlink of resources (images, articles link,...). I copied all of files and folders in root project into a just-created `blog` folder. Then I copy `.htaccess` and `index.php` back to root folder.
+
+> Why need to move files around? Because an image in `blog.myreactapp.com/wp-content/image.png` will become `myreactapp.com/blog/wp-content/image.png`, so I need to create the path-to-file following.
+
+After that, open `index.php` in root folder and change the following line
+
+```plaintext
+require( dirname( __FILE__ ) . '/wp-blog-header.php' );
+```
+
+to
+
+```plaintext
+require( dirname( __FILE__ ) . '/blog/wp-blog-header.php' );
+```
+
+> What's the point of copy these files back? The file `index.php` is necessary in root folder, because it's the entry of whole project. From this file, the program's continue to my mainly code by `require` function.
+
+## Errors you might have (I had) and work around
+
+- Change site address with wrong value, and then I can't access the admin page to recover it. Solution is access to your database (use PHP Admin, or other database client), look at table wp_options, update fields `siteurl` and `home`.
