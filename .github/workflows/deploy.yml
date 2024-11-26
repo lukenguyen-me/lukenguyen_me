@@ -10,6 +10,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: lukenguyen.me
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -30,3 +31,8 @@ jobs:
       - name: Copy files to S3 with the AWS CLI
         run: |
           aws s3 sync ./dist s3://lukenguyen.me/
+      - name: Invalidate CloudFront
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ secrets.DISTRIBUTION }}
+          PATHS: "/*"
