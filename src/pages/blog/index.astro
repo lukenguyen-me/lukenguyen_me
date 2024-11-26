@@ -1,14 +1,15 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
-import { getCollection } from "astro:content";
+import PageBreadcrumb from "@/components/blocks/PageBreadcrumb.astro";
+import BlogCard from "@/components/home/BlogCard.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
 import MainLayout from "@/layouts/MainLayout.astro";
 import { cn } from "@/lib/utils";
-import BlogCard from "@/components/home/BlogCard.astro";
-import PageBreadcrumb from "@/components/blocks/PageBreadcrumb.astro";
+import { getCollection } from "astro:content";
 
-const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const publishOnly = import.meta.env.PROD ? true : false;
+const posts = (await getCollection("blog"))
+  .filter((e) => (publishOnly && e.data.published) || !publishOnly)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <!doctype html>
@@ -43,6 +44,7 @@ const posts = (await getCollection("blog")).sort(
                   description={post.data.description}
                   date={post.data.pubDate}
                   image={post.data.heroImage}
+                  published={post.data.published}
                   link={`/blog/${post.slug}/`}
                 />
               </div>

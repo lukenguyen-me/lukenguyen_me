@@ -1,16 +1,16 @@
 ---
 import "@/styles/global.css";
-import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
-import { cn } from "@/lib/utils";
-import { DATA } from "@/content/resume";
-import { Badge } from "@/components/ui/badge";
 import AvatarCircle from "@/components/blocks/AvatarCircle.astro";
-import MainLayout from "@/layouts/MainLayout.astro";
-import ProjectCard from "@/components/home/ProjectCard.astro";
-import HackathonCard from "@/components/home/HackathonCard.astro";
-import ResumeCard from "@/components/home/ResumeCard.astro";
-import { getCollection } from "astro:content";
 import BlogCard from "@/components/home/BlogCard.astro";
+import HackathonCard from "@/components/home/HackathonCard.astro";
+import ProjectCard from "@/components/home/ProjectCard.astro";
+import ResumeCard from "@/components/home/ResumeCard.astro";
+import { Badge } from "@/components/ui/badge";
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
+import { DATA } from "@/content/resume";
+import MainLayout from "@/layouts/MainLayout.astro";
+import { cn } from "@/lib/utils";
+import { getCollection } from "astro:content";
 
 const posts = (await getCollection("blog"))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())

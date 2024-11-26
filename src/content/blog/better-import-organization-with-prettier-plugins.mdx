@@ -1,0 +1,174 @@
+---
+title: "Better import organization with Prettier Plugins"
+description: ""
+published: false
+pubDate: "Nov 25 2024"
+updatedDate: "Nov 25 2024"
+heroImage: "/blogs/20241125/hero.webp"
+---
+
+After push the Alpha launching on my latest product [Pithy Point](https://pithypoint.com), I realize that it's lack of re-ordering slides function. This is crucial, because changing slide order is a very common behaviour when working with slide. So I have to somehow add this function ASAP.
+
+## Sortable list with drag and drop
+
+Above is a demonstration of what is sortable list with drag and drop. Quick research on internet has lead me to [dnd kit](https://dndkit.com) and some other packages, but this one is one of the most downloaded, so let's use it.
+
+For a very common list in React, you will have something like this
+
+```js
+function List() {
+  return (
+    <div>
+      {listData.map((item) => {
+        return <Item key={item.id} value={item.value} />;
+      })}
+    </div>
+  );
+}
+```
+
+```js
+function Item({ value }) {
+  return <div className="item">{value}</div>;
+}
+```
+
+## 1. Install the package
+
+Install dndkit core package and some other plugin packages. For a least demand to have sortable list, you will need
+
+```bash
+npm install --save @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
+```
+
+## 2. Wrap your List with DndContext and SortableContext
+
+```js
+import { DndContext } from "@dnd-kit/core";
+import { SortableContext } from "@dnd-kit/sortable";
+
+function List() {
+  return (
+    <DndContext>
+      <SortableContext items={listData.map((e) => e.id)}>
+        <div>
+          {listData.map((item) => {
+            return <Item key={item.id} value={item.value} />;
+          })}
+        </div>
+      </SortableContext>
+    </DndContext>
+  );
+}
+```
+
+TODO: explain 2 provider
+
+## 3. Update your Item so thatit can be dragged
+
+```js
+import { useSortable } from "@dnd-kit/sortable";
+
+function Item({ value }) {
+  const { setNodeRef, attributes, listeners, transform, transition } =
+    useSortable({
+      id: value,
+    });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className="item"
+    >
+      <div>{value}</div>
+    </div>
+  );
+}
+```
+
+TODO: explain the use of useSortable hook
+
+## 4. Add dragEnd handler to sync your list state with the list in dns
+
+```js
+import { arrayMove, SortableContext } from "@dnd-kit/sortable";
+import {
+  DndContext,
+  DragEndEvent,
+  PointerSensor,
+} from "@dnd-kit/core";
+
+function List() {
+  function onDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    const activeId = active.id; // the item you're dragging
+    const overId = over?.id; // the item you place current item over. This could be same as dragging item, which mean you didn't move it
+    if (activeId === overId) return;
+
+    const activeColumnIndex = listData.findIndex((col) => col.id === activeId);
+    const overColumnIndex = listData.findIndex((col) => col.id === overId);
+    const newArray =  arrayMove(listData, activeColumnIndex, overColumnIndex);
+    setListData(newArray);
+  }
+
+  return (
+    <DndContext onDragEnd={onDragEnd}>
+      <SortableContext items={listData.map((e) => e.id)}>
+      <div>
+          {listData.map((item) => {
+          return <Item key={item.id} value={item} />;
+        })}
+        </div>
+      </SortableContext>
+    </DndContext>
+  );
+}
+```
+
+TODO: explain what onDragEnd does
+
+## 5. (Optional) Resolve conflict with onClick event you may have on your Item
+
+```js
+import { arrayMove, SortableContext } from "@dnd-kit/sortable";
+import {
+  DndContext,
+  DragEndEvent,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+
+const sensors = useSensors(
+  useSensor(PointerSensor, {
+    activationConstraint: {
+      distance: 8,
+    },
+  }),
+);
+
+function List() {
+  return (
+    <DndContext sensors={sensors} onDragEnd={onDragEnd}>
+      {/* rest of the code */}
+    </DndContext>
+  );
+}
+```
+
+TODO: explain what sensors
+
+That's all, now you have a minimal sortable list with drag and drop functionality in React using DND Kit. You can further customize it by adding more features like sorting, filtering, etc. Happy coding! 🚀
+
+### Referrences:
+
+- [react-dnd-kit-tailwind-shadcn-ui Example](https://github.com/Georgegriff/react-dnd-kit-tailwind-shadcn-ui)
+- [@dnd-kit documentation](https://docs.dndkit.com/)

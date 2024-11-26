@@ -1,3 +1,4 @@
+import ModeToggle from "@/components/ModeToggle";
 import { Dock, DockIcon } from "@/components/blocks/Dock";
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -7,10 +8,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
 import { DATA } from "@/content/resume";
 import { cn } from "@/lib/utils";
-import ModeToggle from "@/components/ModeToggle";
 
 export default function Navbar() {
   return (

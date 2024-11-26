@@ -2,8 +2,20 @@
   "tabWidth": 2,
   "semi": true,
   "trailingComma": "all",
+  "importOrders": [
+    "^@/(.*)$",
+    "",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "",
+    "<BUILTIN_MODULES>",
+    "",
+    "^[.]"
+  ],
   "plugins": [
     "prettier-plugin-astro",
-    "prettier-plugin-tailwindcss"
+    "prettier-plugin-tailwindcss",
+    "prettier-plugin-organize-imports",
+    "@ianvs/prettier-plugin-sort-imports"
   ]
 }
