@@ -12,7 +12,9 @@ import MainLayout from "@/layouts/MainLayout.astro";
 import { cn } from "@/lib/utils";
 import { getCollection } from "astro:content";
 
+const publishOnly = import.meta.env.PROD ? true : false;
 const posts = (await getCollection("blog"))
+  .filter((e) => (publishOnly && e.data.published) || !publishOnly)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 2);
 ---
@@ -201,6 +203,7 @@ const posts = (await getCollection("blog"))
                     date={post.data.pubDate}
                     image={post.data.heroImage}
                     link={`/blog/${post.slug}`}
+                    published={post.data.published}
                   />
                 </div>
               ))
