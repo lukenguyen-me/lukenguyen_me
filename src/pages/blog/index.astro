@@ -5,6 +5,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
 import MainLayout from "@/layouts/MainLayout.astro";
 import { cn } from "@/lib/utils";
 import { getCollection } from "astro:content";
+import { last } from "lodash-es";
 
 const publishOnly = import.meta.env.PROD ? true : false;
 const posts = (await getCollection("blog"))
@@ -37,18 +38,23 @@ const posts = (await getCollection("blog"))
       <div>
         <ul class="mb-4 ml-4 divide-y divide-dashed border-l">
           {
-            posts.map((post) => (
-              <div class="transition-all duration-300 hover:-translate-x-2 hover:bg-muted hover:shadow">
-                <BlogCard
-                  title={post.data.title}
-                  description={post.data.description}
-                  date={post.data.pubDate}
-                  image={post.data.heroImage}
-                  published={post.data.published}
-                  link={`/blog/${post.slug}/`}
-                />
-              </div>
-            ))
+            posts.map((post) => {
+              const slug = post.slug.includes("/")
+                ? last(post.slug.split("/"))
+                : post.slug;
+              return (
+                <div class="transition-all duration-300 hover:-translate-x-2 hover:bg-muted hover:shadow">
+                  <BlogCard
+                    title={post.data.title}
+                    description={post.data.description}
+                    date={post.data.pubDate}
+                    image={post.data.heroImage}
+                    published={post.data.published}
+                    link={`/blog/${slug}/`}
+                  />
+                </div>
+              );
+            })
           }
         </ul>
       </div>

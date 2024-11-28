@@ -6,6 +6,7 @@ import BlogLayout from "@/layouts/BlogLayout.astro";
 import { cn, getBlogImageFromPath } from "@/lib/utils";
 import { Image } from "astro:assets";
 import { getCollection, type CollectionEntry } from "astro:content";
+import { last } from "lodash-es";
 
 export async function getStaticPaths() {
   const publishOnly = import.meta.env.PROD ? true : false;
@@ -13,7 +14,9 @@ export async function getStaticPaths() {
     (e) => (publishOnly && e.data.published) || !publishOnly,
   );
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: {
+      slug: post.slug.includes("/") ? last(post.slug.split("/")) : post.slug,
+    },
     props: post,
   }));
 }
