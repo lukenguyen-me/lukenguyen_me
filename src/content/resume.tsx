@@ -1,3 +1,12 @@
+import ImgDemoFlashnote from "@/assets/resume/demo_flashnote.webp";
+import ImgDemoPithypoint from "@/assets/resume/demo_pithypoint.webp";
+import ImgDemoPrepExam from "@/assets/resume/demo_prepexam.webp";
+import ImgDemoVeso from "@/assets/resume/demo_veso.webp";
+import ImgOrgAxonNetworks from "@/assets/resume/org_axon_networks.svg";
+import ImgOrgDesignveloper from "@/assets/resume/org_designveloper.webp";
+import ImgOrgHcmut from "@/assets/resume/org_hcmut.webp";
+import ImgOrgMyConstant from "@/assets/resume/org_myconstant.webp";
+import ImgMyAvatar from "@/assets/resume/portrait.webp";
 import { Icons } from "@/components/Icons";
 import { BookText, HomeIcon } from "lucide-react";
 
@@ -9,7 +18,7 @@ export const DATA = {
   locationLink: "https://www.google.com/maps/place/Ho+Chi+Minh+City,+Vietnam",
   description: "From Software Engineer to Micro-entrepreneur",
   summary: "",
-  avatarUrl: "/resume/portrait.webp",
+  avatarUrl: ImgMyAvatar,
   skills: [
     "Typescript",
     "React",
@@ -74,7 +83,7 @@ export const DATA = {
       badges: [],
       location: "Ho Chi Minh City, Vietnam",
       title: "Software Engineer",
-      logoUrl: "/resume/org_axon_networks.svg",
+      logoUrl: ImgOrgAxonNetworks,
       start: "Dec 2022",
       end: "Present",
       description:
@@ -86,7 +95,7 @@ export const DATA = {
       href: "https://myconstant.com/",
       location: "Ho Chi Minh City, Vietnam",
       title: "Software Engineer",
-      logoUrl: "/resume/org_myconstant.webp",
+      logoUrl: ImgOrgMyConstant,
       start: "Apr 2020",
       end: "Sep 2022",
       description:
@@ -98,7 +107,7 @@ export const DATA = {
       badges: [],
       location: "Ho Chi Minh City, Vietnam",
       title: "Fullstack Developer",
-      logoUrl: "/resume/org_designveloper.jpg",
+      logoUrl: ImgOrgDesignveloper,
       start: "Jan 2018",
       end: "Mar 2020",
       description:
@@ -110,7 +119,7 @@ export const DATA = {
       school: "Ho Chi Minh University of Technology",
       href: "https://hcmut.edu.vn/",
       degree: "Bachelor of Engineering - Computer Engineering",
-      logoUrl: "/resume/org_hcmut.svg",
+      logoUrl: ImgOrgHcmut,
       start: "2015",
       end: "2019",
     },
@@ -118,7 +127,7 @@ export const DATA = {
   projects: [
     {
       title: "Pithy Point",
-      href: "https://app.pithypoint.com",
+      href: "https://pithypoint.com",
       dates: "Sep 2024 - Present",
       active: true,
       description:
@@ -135,11 +144,11 @@ export const DATA = {
       links: [
         {
           type: "Website",
-          href: "https://app.pithypoint.com",
+          href: "https://pithypoint.com",
           icon: <Icons.globe className="size-3" />,
         },
       ],
-      image: "/resume/demo_pithypoint.webp",
+      image: ImgDemoPithypoint,
       video: "",
     },
     {
@@ -165,7 +174,7 @@ export const DATA = {
           icon: <Icons.globe className="size-3" />,
         },
       ],
-      image: "/resume/demo_prepexam.webp",
+      image: ImgDemoPrepExam,
       video: "",
     },
     {
@@ -201,7 +210,7 @@ export const DATA = {
           icon: <Icons.googleplay className="size-3" />,
         },
       ],
-      image: "/resume/demo_veso.webp",
+      image: ImgDemoVeso,
       video: "",
     },
     {
@@ -237,7 +246,7 @@ export const DATA = {
           icon: <Icons.googleplay className="size-3" />,
         },
       ],
-      image: "/resume/demo_flashnote.webp",
+      image: ImgDemoFlashnote,
       video: "",
     },
   ],
@@ -250,7 +259,7 @@ export const DATA = {
       description:
         "Developed an application which manage IoT devices in smart home using WiFi.",
       links: [],
-      image: "",
+      image: undefined,
       video: "",
     },
   ],

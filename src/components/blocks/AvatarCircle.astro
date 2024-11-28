@@ -1,22 +1,27 @@
 ---
 import { cn } from "@/lib/utils";
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
 
 interface Props {
   className?: string;
-  src: string;
+  src?: string;
+  localSrc?: ImageMetadata;
   alt: string;
   fallbackText: string;
 }
 
-const { className = "", src, alt, fallbackText } = Astro.props;
+const { className = "", src, localSrc, alt, fallbackText } = Astro.props;
 ---
 
 <div class={cn("w-28 h-28 rounded-full border overflow-hidden", className)}>
   {
-    src ? (
+    localSrc ? (
+      <Image src={localSrc} alt={alt} />
+    ) : src ? (
       <img src={src} alt={alt} />
     ) : (
-      <span class="w-full h-full bg-muted rounded-full flex items-center justify-center">
+      <span class="flex h-full w-full items-center justify-center rounded-full bg-muted">
         {fallbackText}
       </span>
     )

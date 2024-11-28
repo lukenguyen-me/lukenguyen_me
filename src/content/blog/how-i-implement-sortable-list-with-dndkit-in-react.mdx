@@ -4,7 +4,7 @@ description: ""
 published: true
 pubDate: "Nov 25 2024"
 updatedDate: "Nov 25 2024"
-heroImage: "/blogs/20241125/hero.webp"
+heroImage: "../../assets/blogs/20241125/hero.webp"
 ---
 
 After push the Alpha launching on my latest product [Pithy Point](https://pithypoint.com), I realize that it's lack of re-ordering slides function. This is crucial, because changing slide order is a very common behaviour when working with slide. So I have to somehow add this function ASAP.
@@ -67,7 +67,6 @@ function List() {
 `DndContext` here to provide the higher level context about how dns handling the dragging behavior.
 
 `SortableContext` to provide the specific sorting context, such the list of data.
-
 
 ## 3. Update your Item so thatit can be dragged
 
@@ -143,7 +142,6 @@ function List() {
 ## 5. (Optional) Resolve conflict with onClick event you may have on your Item
 
 ```js
-import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import {
   DndContext,
   DragEndEvent,
@@ -151,6 +149,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 
 const sensors = useSensors(
   useSensor(PointerSensor, {
@@ -178,4 +177,3 @@ That's all, now you have a minimal sortable list with drag and drop functionalit
 [react-dnd-kit-tailwind-shadcn-ui Example](https://github.com/Georgegriff/react-dnd-kit-tailwind-shadcn-ui)
 
 [@dnd-kit documentation](https://docs.dndkit.com)
-

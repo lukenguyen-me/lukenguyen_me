@@ -1,11 +1,12 @@
 ---
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import type { ImageMetadata } from "astro";
 import { ChevronRightIcon } from "lucide-react";
 import AvatarCircle from "../blocks/AvatarCircle.astro";
 
 interface Props {
-  logoUrl: string;
+  logoUrl: ImageMetadata;
   altText: string;
   title: string;
   subtitle?: string;
@@ -23,7 +24,7 @@ const { href, logoUrl, altText, title, subtitle, badges, period, description } =
   <div class="flex">
     <div class="flex-none">
       <AvatarCircle
-        src={logoUrl}
+        localSrc={logoUrl}
         alt={altText}
         fallbackText={altText[0]}
         className="size-12 object-contain"

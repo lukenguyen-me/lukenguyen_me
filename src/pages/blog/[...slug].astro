@@ -3,7 +3,8 @@ import PageBreadcrumb from "@/components/blocks/PageBreadcrumb.astro";
 import FormattedDate from "@/components/FormattedDate.astro";
 import { Separator } from "@/components/ui/separator";
 import BlogLayout from "@/layouts/BlogLayout.astro";
-import { cn } from "@/lib/utils";
+import { cn, getBlogImageFromPath } from "@/lib/utils";
+import { Image } from "astro:assets";
 import { getCollection, type CollectionEntry } from "astro:content";
 
 export async function getStaticPaths() {
@@ -21,6 +22,8 @@ type Props = CollectionEntry<"blog">;
 const post = Astro.props;
 const { title, description, heroImage, pubDate, updatedDate } = post.data;
 const { Content } = await post.render();
+
+const image = await getBlogImageFromPath(heroImage);
 ---
 
 <!doctype html>
@@ -35,11 +38,11 @@ const { Content } = await post.render();
     <article class="flex flex-col gap-6">
       <div>
         {
-          heroImage && (
-            <img
+          image && (
+            <Image
               width={1020}
               height={510}
-              src={heroImage}
+              src={image.default}
               class="w-full rounded-lg"
               alt=""
             />
