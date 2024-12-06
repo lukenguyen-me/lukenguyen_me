@@ -10,6 +10,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
 import { DATA } from "@/content/resume";
 import MainLayout from "@/layouts/MainLayout.astro";
 import { cn } from "@/lib/utils";
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
 const publishOnly = import.meta.env.PROD ? true : false;
@@ -47,20 +48,55 @@ const posts = (await getCollection("blog"))
         </div>
       </div>
     </section>
-    {
-      DATA.summary && (
-        <section id="about">
-          <div>
-            <h2 class="text-xl font-bold">About</h2>
-          </div>
-          <div>
-            <div class="prose dark:prose-invert max-w-full text-pretty font-sans text-sm text-muted-foreground">
-              {DATA.summary}
-            </div>
-          </div>
-        </section>
-      )
-    }
+    <section id="about">
+      <div>
+        <h2 class="text-xl font-bold">About</h2>
+      </div>
+      <div>
+        <div
+          class="prose dark:prose-invert max-w-full text-pretty font-sans text-muted-foreground"
+        >
+          Midway through 2023, I discovered <span
+            class="font-semibold text-primary underline">Indie Hackers</span
+          >, and it completely shifted my perspective. <span
+            class="font-semibold text-primary underline"
+            >Inspired by the community</span
+          >, I began working on my own product. The journey of <span
+            class="font-semibold text-primary underline"
+            >building software products</span
+          > has been an incredible learning experience, teaching me valuable lessons
+          in <span class="font-semibold text-primary underline"
+            >communication, planning, marketing, and much more</span
+          >. It's been a rewarding adventure, and I'm genuinely excited to see
+          where this path will lead.
+        </div>
+      </div>
+    </section>
+    <section id="photos">
+      <div class="grid grid-cols-3 gap-4">
+        <div class="flex flex-col gap-4">
+          {
+            DATA.photos
+              .slice(0, 3)
+              .map((e) => <Image alt="" src={e} class="rounded-lg" />)
+          }
+        </div>
+        <div class="flex flex-col gap-4">
+          {
+            DATA.photos
+              .slice(3, 5)
+              .map((e) => <Image alt="" src={e} class="rounded-lg" />)
+          }
+        </div>
+        <div class="flex flex-col gap-4">
+          {
+            DATA.photos
+              .slice(5)
+              .map((e) => <Image alt="" src={e} class="rounded-lg" />)
+          }
+        </div>
+      </div>
+    </section>
     <section id="work">
       <div class="flex min-h-0 flex-col gap-y-3">
         <div>

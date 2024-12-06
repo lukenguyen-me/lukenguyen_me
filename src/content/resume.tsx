@@ -2,6 +2,13 @@ import ImgDemoFlashnote from "@/assets/resume/demo_flashnote.webp";
 import ImgDemoPithypoint from "@/assets/resume/demo_pithypoint.webp";
 import ImgDemoPrepExam from "@/assets/resume/demo_prepexam.webp";
 import ImgDemoVeso from "@/assets/resume/demo_veso.webp";
+import ImgLuke1 from "@/assets/resume/luke_1.webp";
+import ImgLuke2 from "@/assets/resume/luke_2.webp";
+import ImgLuke3 from "@/assets/resume/luke_3.webp";
+import ImgLuke4 from "@/assets/resume/luke_4.webp";
+import ImgLuke5 from "@/assets/resume/luke_5.webp";
+import ImgLuke6 from "@/assets/resume/luke_6.webp";
+import ImgLuke7 from "@/assets/resume/luke_7.webp";
 import ImgOrgAxonNetworks from "@/assets/resume/org_axon_networks.svg";
 import ImgOrgDesignveloper from "@/assets/resume/org_designveloper.webp";
 import ImgOrgHcmut from "@/assets/resume/org_hcmut.webp";
@@ -17,8 +24,16 @@ export const DATA = {
   location: "Ho Chi Minh City, Vietnam",
   locationLink: "https://www.google.com/maps/place/Ho+Chi+Minh+City,+Vietnam",
   description: "From Software Engineer to Micro-entrepreneur",
-  summary: "",
   avatarUrl: ImgMyAvatar,
+  photos: [
+    ImgLuke2,
+    ImgLuke3,
+    ImgLuke6,
+    ImgLuke5,
+    ImgLuke1,
+    ImgLuke4,
+    ImgLuke7,
+  ],
   skills: [
     "Typescript",
     "React",
