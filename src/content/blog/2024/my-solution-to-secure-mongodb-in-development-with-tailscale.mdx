@@ -1,0 +1,85 @@
+---
+title: "My solution to secure MongoDB in development with Tailscale"
+description: "Publicly exposing MongoDB is risky, but managing IP whitelists is a pain. This post shows how I use Tailscale for secure, convenient development."
+published: true
+pubDate: "Dec 14 2024"
+updatedDate: "Dec 14 2024"
+heroImage: "../../assets/blogs/20241214/hero.webp"
+---
+
+Securing MongoDB during development can be a real headache. Exposing it directly to the internet is a major security risk, but constantly updating IP whitelists for dynamic IPs is incredibly tedious. Static IPs are an option, but they come with a cost. In this post, I'll share my solution using Tailscale, which provides a secure and convenient way to access your MongoDB instances without any of these drawbacks.
+
+## Presiquisites
+
+- A VPS that you have SSH access to.
+
+## The Problem with Traditional Approaches
+
+Let's quickly recap why the traditional methods aren't ideal:
+
+- **Exposing MongoDB directly:** This is a **major security risk**. Anyone who discovers your server's IP address and port can potentially access your database, leading to data breaches, unauthorized access, and other serious problems.
+
+- **IP whitelisting limitations:** This involves specifying which IP addresses are allowed to connect to your MongoDB server. While it adds a layer of security, it becomes a nightmare when your development machine has a dynamic IP address that changes frequently. You'll constantly have to update the whitelist, which is time-consuming and frustrating.
+
+- **Static IP costs:** Getting a static IP address from your ISP usually involves an extra monthly fee. While it solves the dynamic IP problem, it's an unnecessary expense when there are better alternatives.
+
+## What is Tailscale? (Briefly)
+
+Tailscale is a mesh VPN that creates a secure, private network between your devices, regardless of where they are located. The best part? It's incredibly easy to set up and requires almost no configuration.
+
+## My Idea
+
+Because the VPS already come with a public IP address, then:
+
+1. _Install Tailscale on the VPS._
+2. _Configure it to become an exit node._
+3. _Configure MongoDB to whitelist the VPS' IP address._
+4. _Install Tailscale on my development machine._
+5. _Connect my development machine to the Tailscale network, select exit node as the VPS._
+
+Done, now I can connect to MongoDB from my machine conveniently without expose it to public network.
+
+## Step by Step Guide (but not hand by hand)
+
+### 1. Create a Tailscale account and install Tailscale on the VPS.
+
+This is pretty straightforward, just go to [Tailscale website](https://tailscale.com) and click Get started.
+
+Then access to your VPS via SSH, and then following [the install instruction from Tailscale](https://tailscale.com/kb/1347/installation). Remember to run `sudo tailscale up` after the installation to login to your Tailscale account.
+
+### 2. Still on your VPS, configure Tailscale to become an exit node.
+
+By default, Tailscale will create a private network for your devices. However, to make your VPS an exit node, you need to configure it to allow connections from the public internet.
+
+Follow [this instruction](https://tailscale.com/kb/1103/exit-nodes) to make your VPS an exit node.
+
+### 3. Configure MongoDB to whitelist the VPS' IP address.
+
+If you're using cloud providers such as Mongo Atlas, it should have a Settings/Configure page to do this.
+
+If you hosted MongoDB yourself, let say you're using Ubuntu, you can follow [this article from Digital Ocean](https://www.digitalocean.com/community/tutorials/how-to-configure-remote-access-for-mongodb-on-ubuntu-20-04).
+
+### 4. Install Tailscale on your development machine.
+
+Again, install Tailscale on your machine following [their instruction](https://tailscale.com). After that, login to your Tailscale account and connect to the Tailscale network.
+
+### 5. Configure to use the VPS exit node in your machine.
+
+If you're using MacOS (like me), you can click to Tailscale icon in the menu bar, then select Exit Nodes -> your VPS name. Otherwise, referring to [this document](https://tailscale.com/kb/1103/exit-nodes#use-the-exit-node]).
+
+## Benefits of this Approach
+
+- **Enhanced Security:** Your MongoDB instance is no longer exposed to the public internet. All connections are encrypted via Tailscale's WireGuard tunnel.
+- **Development Convenience:** You can access your database from anywhere with an internet connection, without having to manage IP whitelists.
+- **Cost Savings:** No need to pay for static IPs.
+- **Simplified Network Management:** Tailscale handles the network complexity for you.
+
+## Troubleshooting (Optional)
+
+- **Firewall Rules:** Ensure that your VPS firewall isn't blocking traffic on the Tailscale interface.
+- **Tailscale Connection Problems:** Check the Tailscale status on both your VPS and development machine using `tailscale status`.
+- **MongoDB Connection Errors:** Check the MongoDB logs (`/var/log/mongodb/mongod.log`) for any error messages.
+
+## Conclusion
+
+Using Tailscale is a simple yet effective way to secure your MongoDB instances during development. It provides a secure and convenient solution without the hassle of managing IP whitelists or the cost of static IPs. I highly recommend giving it a try!

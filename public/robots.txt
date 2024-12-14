@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
+Disallow: /unsubscribe
+Disallow: /*.json
+Disallow: /*_buildManifest.js$
+Disallow: /*_middleware.js$
+Disallow: /*_ssgManifest.js$
+Disallow: /*.js$
 
 Sitemap: https://lukenguyen.me/sitemap-index.xml

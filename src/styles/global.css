@@ -75,3 +75,10 @@
   src: url("/fonts/GeistMono[wght].ttf") format("truetype");
   font-display: swap;
 }
+
+.markdown-body ol {
+  list-style-type: decimal;
+}
+.markdown-body ul {
+  list-style-type: disc;
+}

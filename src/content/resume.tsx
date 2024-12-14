@@ -13,7 +13,7 @@ import ImgOrgAxonNetworks from "@/assets/resume/org_axon_networks.svg";
 import ImgOrgDesignveloper from "@/assets/resume/org_designveloper.webp";
 import ImgOrgHcmut from "@/assets/resume/org_hcmut.webp";
 import ImgOrgMyConstant from "@/assets/resume/org_myconstant.webp";
-import ImgMyAvatar from "@/assets/resume/portrait.webp";
+import ImgMyAvatar from "@/assets/resume/portrait_face.webp";
 import { Icons } from "@/components/Icons";
 import { BookText, HomeIcon } from "lucide-react";
 

@@ -11,7 +11,7 @@ There are many articles about Code Splitting in ReactJS, as well as why we shoul
 
 ## Before code splitting
 
-![Bundle analyzer before code splitting](/blogs/20210818/before.webp)
+![Bundle analyzer before code splitting](../../../assets/blogs/20210818/before.webp)
 
 As you can see in the above image, the `main` chunk is the largest one. Watch closer, there is a `yourAccounts` module inside it. In my project, there is a Home page and YourAccounts page. So I wonder, how the hell there is `yourAccounts` module in `main` chunk?
 
@@ -65,6 +65,6 @@ const AccountHistoryDetail = loadable(() => import('src/screens/yourAccounts/mob
 
 ## After code splitting
 
-![Bundle analyzer after code splitting](/blogs/20210818/after.webp)
+![Bundle analyzer after code splitting](../../../assets/blogs/20210818/after.webp)
 
 Now the `yourAccounts` module is split into separate chunk, as you can see in the above image. Just a small work of my daily experience, but I hope this blog can help someone who's looking for a way to apply code splitting effectively.
