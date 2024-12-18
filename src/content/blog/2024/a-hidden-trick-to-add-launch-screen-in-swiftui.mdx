@@ -1,0 +1,47 @@
+---
+title: "A hidden trick to add a Launch Screen in SwiftUI"
+description: "Apple's launch screen methods didn't work for my SwiftUI app. Here's the alternative I found with a storyboard and ImageView."
+published: false
+pubDate: "Dec 24 2024"
+updatedDate: "Dec 24 2024"
+heroImage: "/images/blogs/20241224/hero.webp"
+---
+
+If you ever search for solutions of adding Launch Screen to an iOS app, there'll be 2 main approaches: **using storyboard** (Apple's recommendation), programmatically **control UI based on active state**. This post's about the first one, because of its effectiveness.
+
+From [Apple developer document](https://developer.apple.com/documentation/xcode/specifying-your-apps-launch-screen), first step is creating a new file - `LaunchScreen.storyboard`. After that, you have options of:
+
+## Option 1 - Add new item with key `UILaunchScreen` to Info tab
+
+![Add new item with key UILaunchScreen to Info.plist](/images/blogs/20241224/approach_1.webp)
+
+1. In the settings for your target, select the Info tab.
+2. In the Custom iOS Target Properties section, expand the `Launch Screen` key.
+3. Click the Add button (+), type in UILaunchScreen, and press Return to add the launch screen key to the property list. If the UILaunchScreen key is already present, you can skip this step.
+4. Select the UILaunchScreen key, click the Add button (+), then enter `UILaunchStoryboardName` as key and `LaunchScreen` as value.
+
+If the launch screen added successfully to your app, congratulation! However, **this approach does not work for me**.
+
+## Option 2 - Configure a launch screen storyboard
+
+![Configure a launch screen storyboard](/images/blogs/20241224/approach_2.webp)
+
+1. In the settings for your target, select the General tab and find the “App Icons and Launch Images” section.
+2. From the Launch Screen File pop-up menu, choose the new launch screen file.
+
+This option may work for you, but **this does not work for me too**.
+
+## My approach - Add `Launch screen interface file base name` to Info tab
+
+![Add Launch screen interface file base name to Info tab](/images/blogs/20241224/my_approach.webp)
+
+1. In the settings for your target, select the Info tab.
+2. In the Custom iOS Target Properties section, find the `Launch screen interface file base name` key.
+3. If you don't have this key in your project yet, just click (+) on any other key to add this.
+4. Enter your launch screen file name, for me it's LaunchScreen.
+
+Tada 🎉 This time it works.
+
+Not sure why Apple doesn't mention this option in their document (maybe it's not up to date?), but I haven't found this trick anywhere on Internet. So I decide to share it, hope it will help someone.
+
+Happy coding!

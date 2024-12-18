@@ -51,17 +51,19 @@ const heroImage = await getBlogImageFromPath(image);
           )
         }
       </div>
-      {
-        heroImage ? (
-          <Image
-            src={heroImage.default}
-            alt={title}
-            class="aspect-video w-full rounded-md object-cover md:w-48"
-          />
-        ) : (
-          <div class="aspect-video w-full rounded-md bg-secondary md:w-48" />
-        )
-      }
+      <div>
+        {
+          heroImage ? (
+            <Image
+              src={heroImage.default}
+              alt={title}
+              class="aspect-video h-fit w-full rounded-md object-cover md:w-48"
+            />
+          ) : (
+            <div class="aspect-video w-full rounded-md bg-secondary md:w-48" />
+          )
+        }
+      </div>
     </div>
   </li>
 </a>
